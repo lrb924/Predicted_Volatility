@@ -27,3 +27,5 @@ VARMAX
 Algo Trading
 * Two strategies for each ETF type
   * Buy or sell based on predicted signal
+
+Predict volatility of indices based on indices themsevles
