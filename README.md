@@ -7,9 +7,13 @@
 * `python == 3.7.13+` 
 * `numpy == 1.21.5`
 * `pandas == 1.3.5+`
-* `hvplot == 0.7.3`
 * `matplotlib == 3.5.1`
 * `json == 2.0.9`
+* `scikit-learn == 1.1.2`
+* `statsmodels == 0.13.2`
+* `arch == 5.3.1`
+* `seaborn == 0.12`
+* 
 
 ### *Files Navigation*
 * `Data`: Directory containing all original CSV files
@@ -17,8 +21,9 @@
 * `Notebook 1`
 * `Notebook 2`
 
-## Introduction
-• Business Question:
+## *Purpose of Use*
+* Business Question:
+* Motivation:
 
 ## Project Goals
 
