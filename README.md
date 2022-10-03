@@ -24,9 +24,9 @@
 
 ### *Purpose of Use*
 
-Our team decided to investigate the effect of volatility of the S&P 500 on the profitability of cyclical and and defensive exchange-traded funds (ETFs). 
+Our team decided to investigate the effect of volatility of the S&P 500 Index on the profitability of cyclical and and defensive exchange-traded funds (ETFs). 
 
-The business question we hope to answer is: *is trading defensive or cyclical exchange-traded funds (ETFs) based on future volatility profitable? If so, which set of ETFs is more profitable?*
+The business question we hope to answer is: *is trading defensive or cyclical ETFs based on future volatility profitable? If so, which set of ETFs is more profitable?*
 
 Our motivation for taking on this challenge is to find out if, based on historical volatility data, we could predict future volatility. And using the predicted future volatility we then wanted to find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
 
@@ -37,6 +37,8 @@ A **defensive stock** is "a stock that provides consistent dividends and stable 
 And one important thing to note is that "[c]yclical stocks are generally the opposite of defensive stocks. Cyclical stocks include discretionary companies, such as Starbucks or Nike, while defensive stocks are staples, such as Campbell Soup." [1]
 
 We hope to answer our business question by using historic closing data for the S&P 500, and the historic closing data for five cyclical ETFs, and five defensive ETFs. All of this data can be accessed through the Google Finance API.
+
+In order to get the predicted volatility based on the S&P 500, we used both a GARCH model and a VARMAX model
 
 The specific ETFs analyzed:
 * Cyclical:
@@ -59,27 +61,28 @@ The time periods analyzed include:
 
 --------------
 
-## Data Pre-Processing
+## Data Pre-Processing/Gathering Steps (Cleaning and Manipulation)
 
-## Visuals
 
-## Additional Explanations
 
-## Major Findings
+## Visuals and Explanations
 
-## Limitations and Future Developments
+## Additional Explanations and Major Findings
+
+## Challenges, Limitations, and Future Developments
 
 ## Conclusion
 
 ## References
-* Cyclical Stocks Definition: https://www.investopedia.com/terms/c/cyclicalstock.asp
-* Defensive Stocks Definition: https://www.investopedia.com/terms/d/defensivestock.asp
+
+1. Cyclical Stocks Definition: https://www.investopedia.com/terms/c/cyclicalstock.asp
+2. Defensive Stocks Definition: https://www.investopedia.com/terms/d/defensivestock.asp
 
 Google Finance Data API
 
 ## Team Members
-Lara Barger
-Alec Gladkowski
-Billel Loubari
-Alejandro Palacios
+1. Lara Barger
+2. Alec Gladkowski
+3. Billel Loubari
+4. Alejandro Palacios
 
