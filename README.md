@@ -63,21 +63,60 @@ The time periods analyzed include:
 
 Our team decided to use the Google Finance API to get the historical closing data for the S&P 500 Index, and ten different ETFs. After connecting via API to Google Finance, we created CSV files for the Index and each ETF by using Google Sheets and then exporting those as CSVs. The collection of CSVs can be found in the `Data` directory. We exported as much historical data as was available, which ended up going back to late September 2010 through late September 2022. However, some of the data was eventually dropped in order to ensure all data sources lined up correctly. We used the tickers $ITB, $IYC, $PEJ, $VCR, $XLY, $IYK, $KXI, $PBJ, $VOC, and $XLP for the ETFs. All of these are on the NYSE Arca Exchange, except $ITB, which is on the Cboe BZX Exchange. This group of ten ETFs are a sample of five cyclical and five defensive ETFs that cover the range of both types.
 
-In order to get the predicted volatility based on the S&P 500, we used both a GARCH model and a VARMAX model. Once both models ran, we continued the process of getting the predicted volatility with the VARMAX model since there was a lower error with that model compared to the GARCH model. 
+In order to get the predicted volatility based on the S&P 500, we used both a GARCH model and a VARMAX model. 
 
+First, we ran the GARCH model. [4] To run this model, we added the S&P 500 data to a dataframe, and in addition to the closing prices we added columns with the calculated returns and the standard deviation (based on a rolling window of 5). Next, we used the Augmented Dickey-Fuller test to see if the data gathered was stationary. [3]
+
+GET CLARITY HERE
+
+Next, we ran the VARMAX model. [5] To run this model, we followed the same steps as above before we ran GARCH: added data to a dataframe, got the returns and the standard deviation with a rolling window of 5, checked the stationarity of the data, then scaled the data using MaxAbsScaler. Once the data was manipulated, we created the VARMAX model and ran it.
+
+GET CLARITY HERE
 
 ## Visuals and Explanations
 
+Below is a sample of plots that were created duringthe data cleanup, both models, and the trading algorithm. All plots can be found in the `Plots` directory.
+
+NEED SAMEPL OF ORGANIZED PLOTS
+
+All plots not included here can be found in the `Plots` directory. 
+
 ## Additional Explanations and Major Findings
+
+Once both models ran, we continued the process of getting the predicted volatility with the VARMAX model since there was a lower error with that model compared to the GARCH model. 
+
+After the VARMAX model was created, we were able to create a new trading algorithm to determine whether or not cyclical or defensive ETFs should be bought or sold based on the predicted volatility that the VARMAX model calculated. 
+
+First, we calculated the daily returns for each of the ETFs and concated the cyclical ETFs into one dataframe, and the defensive ETFs into another dataframe. Next, we calculated the sum of each day's returns and added a new column with the sums to each dataframe. Using the predicted volatility signals, we added a new column to each ETF datafram
+
+By calculating the predicted volatility and comparing it to the observed volatility, we added a signal column to the dataframe that indicated whether or not the ETFs on that day should be classified as "buy" or "sell."
+
+Our primary finding after running the trading algorithm is that our model did not work as well as we hoped. Overall, the signal predictions of "buy" and "sell" resulted in strategy returns of 1.56% compared toactual returns of 2.08% for defensive ETFs. Additionally, it resulted in strategy returns of 0.16% compared to actual returns of 0.65% for cyclical ETFs. Both sets of strategy returns garnered less than the actual returns. 
 
 ## Challenges, Limitations, and Future Developments
 
+The initial challenge was deciding which data to use for the analysis. We originally wanted to include more than one index to calculate the predicted volatility, but our time constraints limited that. It would have taken too long to run the models with more than one Index, therefore we decided to move forward with only one: the S&P 500. 
+
+After initially running both models, it was clear that there could have been more testing in order to get the models 
+
+Some of these limitations are obvious indicators of future development/improvement. If we were able to fine tune or adjust the models' input parameters that resulted in the best outcome, or the smallest error number, it's possible the strategy returns would have been better.
+
+ELABORATE HERE
+
 ## Conclusion
+
+In conclusion, our VARMAX model's predictions did not outperform the actual ETF returns. However, it was determined that defensive ETFs are more profitable than cyclical when the predicted volatility was applied.
+
+ELABORATE HERE
 
 ## References
 
 1. Cyclical Stocks Definition: https://www.investopedia.com/terms/c/cyclicalstock.asp
 2. Defensive Stocks Definition: https://www.investopedia.com/terms/d/defensivestock.asp
+3. How to Check if Time Series Data is Stationary with Python: https://machinelearningmastery.com/time-series-data-stationary-python/
+4. ARCH/GARCH Volatility Forecasting: https://goldinlocks.github.io/ARCH_GARCH-Volatility-Forecasting/
+5. Multivariate time series models: https://goldinlocks.github.io/Multivariate-time-series-models/
+6. 
 
 Google Finance Data API
 
