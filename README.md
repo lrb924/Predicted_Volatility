@@ -38,8 +38,6 @@ And one important thing to note is that "[c]yclical stocks are generally the opp
 
 We hope to answer our business question by using historic closing data for the S&P 500, and the historic closing data for five cyclical ETFs, and five defensive ETFs. All of this data can be accessed through the Google Finance API.
 
-In order to get the predicted volatility based on the S&P 500, we used both a GARCH model and a VARMAX model
-
 The specific ETFs analyzed:
 * Cyclical:
   * ITB: iShares U.S. Home Construction ETF (Cboe BZX Exchange)
@@ -63,6 +61,9 @@ The time periods analyzed include:
 
 ## Data Pre-Processing/Gathering Steps (Cleaning and Manipulation)
 
+Our team decided to use the Google Finance API to get the historical closing data for the S&P 500 Index, and ten different ETFs. After connecting via API to Google Finance, we created CSV files for the Index and each ETF by using Google Sheets and then exporting those as CSVs. The collection of CSVs can be found in the `Data` directory. We exported as much historical data as was available, which ended up going back to late September 2010 through late September 2022. However, some of the data was eventually dropped in order to ensure all data sources lined up correctly. We used the tickers $ITB, $IYC, $PEJ, $VCR, $XLY, $IYK, $KXI, $PBJ, $VOC, and $XLP for the ETFs. All of these are on the NYSE Arca Exchange, except $ITB, which is on the Cboe BZX Exchange. This group of ten ETFs are a sample of five cyclical and five defensive ETFs that cover the range of both types.
+
+In order to get the predicted volatility based on the S&P 500, we used both a GARCH model and a VARMAX model. Once both models ran, we continued the process of getting the predicted volatility with the VARMAX model since there was a lower error with that model compared to the GARCH model. 
 
 
 ## Visuals and Explanations
