@@ -99,7 +99,7 @@ Our primary finding after running the trading algorithm is that our model did no
 
 The initial challenge was deciding which data to use for the analysis. We originally wanted to include more than one index to calculate the predicted volatility, but our time constraints limited that. It would have taken too long to run the models with more than one Index, therefore we decided to move forward with only one: the S&P 500. 
 
-After initially running both models, it was clear that there could have been additional testing done in order to get a more satisfactory error number.
+After initially running both models, it was clear that there could have been additional testing done in order to get a more satisfactory error number. In the tests that were performed, there were also conflicting findings when running tests for the best <code>p,q</code> values for our VARMAX model. For example, this testing was based on minimizing <code>BIC</code> for the set of <code>p,q</code> combinations we chose to examine. However, the <code>p,q</code> combination that resulted in the smallest <code>BIC</code> would not necessarily result in the lowest <code>Average Error per Day</code> when the VARMAX predictions were compared with the true values.
 
 Some of these limitations are obvious indicators of future development/improvement. If we were able to fine tune or adjust the models' input parameters that resulted in the best outcome, or the smallest error number, it's possible the strategy returns would have been better.
 

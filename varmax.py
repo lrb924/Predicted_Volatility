@@ -6,7 +6,6 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-
 from sklearn.preprocessing import MaxAbsScaler
 
 import statsmodels.api as sm
@@ -17,12 +16,7 @@ from statsmodels.tsa.stattools import adfuller
 import warnings
 warnings.filterwarnings('ignore')
 
-# %%
-# from watermark import watermark
-# print(watermark())
-# print(watermark(iversions=True, globals_=globals(), packages="numpy,scipy"))
 
-# %%
 # Load one of the indices and clean the data
 def load_index(path, stdev_window=5, mean_window=5):
     
@@ -42,13 +36,7 @@ def load_index(path, stdev_window=5, mean_window=5):
     
     return df
 
-# index_path = './DATA/INDICES/SP_OHLCV.csv'
-# stdev_window = 25
-# mean_window = 10
-# df_SP = load_index(index_path, stdev_window, mean_window)
-# df_SP.stdev.plot(figsize=(16, 10));
 
-# %%
 # Function for plotting grids with matplotlib
 def plot_grid(df, nrows, ncols):
     
@@ -64,11 +52,15 @@ def plot_grid(df, nrows, ncols):
         ax.tick_params(labelsize=6)
         
     plt.tight_layout();
-    
-# Plot dataset
-# plot_grid(df_SP[['Close', 'stdev', 'Volume']], 3, 1)
 
-# %%
+
+def plot_acf_squared(df):
+
+    for column in df:
+        if 'return' in column:
+            plot_acf(np.power(df[column], 2), title=f'{df[column].name}^2 AutoCorrelation', auto_ylims=True);
+
+
 # Check stationarity
 def check_stationarity(df, n_diffs=0):
     
@@ -98,9 +90,7 @@ def check_stationarity(df, n_diffs=0):
         # print(f'Non-stationary columns still exist\nPerforming .diff(): count {n_diffs}')
         return check_stationarity(df, n_diffs), n_diffs
     
-# df_SP, n_diffs  = check_stationarity(df_SP)
 
-# %%
 # Scale the data with MaxAbsScaler
 def scale_data(df, n_diffs, n_train, stdev_window, mean_window):
 
@@ -126,10 +116,7 @@ def scale_data(df, n_diffs, n_train, stdev_window, mean_window):
     
     return df_train, df_test, df_pred_index, n_test
     
-# n_train = 2500
-# df_train, df_test, df_pred_index, n_test = scale_data(df_SP, n_diffs, n_train, stdev_window)
 
-# %%
 # Source:
 # https://goldinlocks.github.io/Multivariate-time-series-models/
 # 
@@ -139,9 +126,6 @@ def scale_data(df, n_diffs, n_train, stdev_window, mean_window):
 def check_p_q(df_train, n_tocheck):
     
     test_results = {}
-    
-    # How many values to check for p & q
-    n_tocheck += 1
     
     for p in range(n_tocheck):
         for q in range(n_tocheck):
@@ -180,10 +164,7 @@ def check_p_q(df_train, n_tocheck):
     print('Done testing.')
     return test_results
 
-# test_results = check_p_q(df_train)
 
-
-# %%
 # Source:
 # https://goldinlocks.github.io/Multivariate-time-series-models/
 
@@ -197,7 +178,12 @@ def analyze_order(test_results):
     
     # We want to minimize BIC
     # Visualize the values with a heatmap
-    sns.heatmap(test_results.BIC.unstack(), fmt='.2f', annot=True, cmap='Blues_r')
+    sns.heatmap(test_results.BIC.unstack(),
+                fmt='.2f', annot=True,
+                cmap='Blues_r',
+                title='P,Q Test - BIC'
+    )
+    
     b, t = plt.ylim() 
     b += 0.5 
     t -= 0.5 
@@ -212,9 +198,7 @@ def analyze_order(test_results):
     
     return p_best, q_best
 
-# p_best, q_best = analyze_order(test_results)
 
-# %%
 def create_varmax(df_train, p_best, q_best):
 
     # Split exogenous and endogenous variables
@@ -234,13 +218,11 @@ def create_varmax(df_train, p_best, q_best):
     # Fit model
     print('Fitting model.. Please wait..')
     model_fit = model.fit(disp=False)
-    # model_fit.summary()
+    model_fit.summary()
     
     return model_fit
 
-# model_fit = create_varmax(df_train, p_best, q_best)
 
-# %%
 def create_varmax_test(df_train, p_best, q_best):
     
     convergence_error, stationarity_error = 0, 0
@@ -266,16 +248,13 @@ def create_varmax_test(df_train, p_best, q_best):
     except ValueError:
         stationarity_error += 1
     
-    errors = (convergence_error, stationarity_error)
-    
     if convergence_error == 0 and stationarity_error == 0:
             return (model_fit, None)
     else:
+        errors = (convergence_error, stationarity_error)
         return (None, errors)
 
-# model_fit = create_varmax(df_train, p_best, q_best)
 
-# %%
 def analyze_predictions(model_fit, df_test, df_pred_index, n_test):
 
     # Set random seed
@@ -293,48 +272,66 @@ def analyze_predictions(model_fit, df_test, df_pred_index, n_test):
     
     return pred
 
-# pred = analyze_predictions(model_fit, df_pred_index, n_test, df_test)
 
-# %%
 def find_error(pred, n_test):
     
+    # Compute the error as 'Avg error per day'
+    # This accounts for different test set sizes
     error_total = np.round(np.sum(np.abs(pred['prediction - observed']))/n_test, 10)
-    # print(f'Total Error: {error_total}')
     
     return error_total
-    
-# error_total = find_error(pred)
 
-# %%
-# Alternate version of the function to check for best rolling windows:
-# ---------------------------------------------
-# Results of Stdev window test:
-# 35 - 46.21
-# 40 - 37.71
-# 45 - 37.52
-# 50 - 44.29
-# 45 gives lowest error
-# ---------------------------------------------
-# Results of Mean window test:
-# 25 - 35.88
-# 30 - 27.75
-# 35 - 25.82
-# 40 - 45.17
-# 45 - 20.28
-# 50 - 43.24
-# 45 gives best error
-# ---------------------------------------------
+
+# -------------------------------------------------------------------------------------
+# Run everything and return dataframe of predictions
+# -------------------------------------------------------------------------------------
+
+def run_varmax_predictions():
+    
+    path = './DATA/INDICES/SP_OHLCV.csv'
+    stdev_window = 35
+    mean_window = 15
+
+    df_SP = load_index(path, stdev_window, mean_window)
+    # plot_grid(df_SP[['Close', 'stdev', 'Volume']], 3, 1)
+
+    df_SP, n_diffs  = check_stationarity(df_SP)
+
+    n_train = 2500
+    df_train, df_test, df_pred_index, n_test = scale_data(df_SP, n_diffs, n_train, stdev_window, mean_window)
+
+    # Setting p, q manually - 1,2 found to give best fit
+    p_best, q_best = 1,2
+    model_fit = create_varmax(df_train, p_best, q_best)
+
+    # Plot stdev diagnostics
+    model_fit.plot_diagnostics(5,figsize=(20,8));
+
+    pred = analyze_predictions(model_fit, df_test, df_pred_index, n_test)
+    error_total = find_error(pred, n_test)
+    print(f'Avg Error per Day: {error_total}')
+    print('Completed varmax predictions')
+    
+    return pred
+
+
+# -------------------------------------------------------------------------------------
+# Alternate version of the 'Run Everything' function to check for best rolling windows:
+# Best windows:
+# Mean: 15
+# Stdev: 35
+# -------------------------------------------------------------------------------------
 
 def run_varmax_predictions_test(stdev_windows, mean_windows):
     
     results = {}
     
-    for stdev_window in stdev_windows:
-        for mean_window in mean_windows:
+    for mean_window in mean_windows:
+        for stdev_window in stdev_windows:
             
             print('-----------------------------')
-            print(f'Stdev window: {stdev_window}')
             print(f'Mean window: {mean_window}')
+            print(f'Stdev window: {stdev_window}')
             
             path = './DATA/INDICES/SP_OHLCV.csv'
 
@@ -346,12 +343,13 @@ def run_varmax_predictions_test(stdev_windows, mean_windows):
             n_train = 2500
             df_train, df_test, df_pred_index, n_test = scale_data(df_SP, n_diffs, n_train, stdev_window, mean_window)
 
-            # Uncomment these lines below to check for best p & q
-            # It will take a long time
+            # NOTE: Uncomment the lines below to check for best p & q
+            # It will take a LONG time if checking more than 2 or 3 values for each
+            # It will take an EXTREMELY LONG time if checking for many rolling window as well
             # --------------------------------------------------
             # test_results = check_p_q(df_train, 3)
             # p_best, q_best = analyze_order(test_results)
-
+            
             # Setting p, q manually - 1,2 found to give best fit
             p_best, q_best = 1, 2
             model_fit, errors = create_varmax_test(df_train, p_best, q_best)
@@ -374,54 +372,3 @@ def run_varmax_predictions_test(stdev_windows, mean_windows):
             print(f'Avg error/day: {error_total}')
             
     return results
-
-# stdev_windows = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
-# mean_windows = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
-# results = run_varmax_predictions_test(stdev_windows, mean_windows)
-
-# %%
-# ==================================================
-# Run Everything
-# ==================================================
-
-def run_varmax_predictions():
-    
-    path = './DATA/INDICES/SP_OHLCV.csv'
-    stdev_window = 5
-    mean_window = 5
-
-    df_SP = load_index(path, stdev_window, mean_window)
-    # plot_grid(df_SP[['Close', 'stdev', 'Volume']], 3, 1)
-
-    df_SP, n_diffs  = check_stationarity(df_SP)
-
-    n_train = 2500
-    df_train, df_test, df_pred_index, n_test = scale_data(df_SP, n_diffs, n_train, stdev_window, mean_window)
-
-    # Uncomment these lines below to check for best p & q
-    # It will take a long time
-    # --------------------------------------------------
-    # test_results = check_p_q(df_train, 3)
-    # p_best, q_best = analyze_order(test_results)
-
-    # Setting p, q manually - 1,2 found to give best fit
-    p_best, q_best = 1, 2
-    model_fit = create_varmax(df_train, p_best, q_best)
-
-    # Plot stdev diagnostics
-    model_fit.plot_diagnostics(5,figsize=(20,8));
-
-    pred = analyze_predictions(model_fit, df_test, df_pred_index, n_test)
-    error_total = find_error(pred, n_test)
-    print(f'Avg Error per Day: {error_total}')
-    print('Completed varmax predictions')
-    
-    return pred
-    
-# run_varmax_predictions()
-
-
-# %%
-
-
-
