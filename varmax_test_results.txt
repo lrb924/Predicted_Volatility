@@ -149,28 +149,32 @@ Mean window: 15
 Number of testing days: 435
 *****ERROR*****
 -----------------------------
-Mean window: 15
 Stdev window: 35
+Mean window: 15
 Number of testing days: 425
 Avg error/day: 0.054478661
 -----------------------------
-Mean window: 15
 Stdev window: 40
+Mean window: 15
 Number of testing days: 415
 Avg error/day: 0.065108289
 -----------------------------
-Mean window: 15
 Stdev window: 45
+Mean window: 15
 Number of testing days: 405
 Avg error/day: 0.0799606197
 -----------------------------
-Mean window: 15
 Stdev window: 50
+Mean window: 15
 Number of testing days: 395
 Avg error/day: 0.0962049088
 -----------------------------
-Mean window: 15
 Stdev window: 55
+Mean window: 15
 Number of testing days: 385
 Avg error/day: 0.1017530746
 -----------------------------
+Stdev window: 60
+Mean window: 15
+Number of testing days: 375
+Avg error/day: 0.0965701329
