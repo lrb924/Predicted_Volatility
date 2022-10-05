@@ -413,7 +413,7 @@ def run_varmax_predictions():
 
     pred = analyze_predictions(model_fit, df_test, df_pred_index, n_test)
     error_total = find_error(pred, n_test)
-    print(f'Total error: {error_total}')
+    print(f'Avg Error per Day: {error_total}')
     print('Completed varmax predictions')
     
     return pred

@@ -1,0 +1,176 @@
+-----------------------------
+Stdev window: 5
+Mean window: 5
+Number of testing days: 505
+Avg error/day: 0.0589315048
+-----------------------------
+Stdev window: 10
+Mean window: 5
+Number of testing days: 495
+Avg error/day: 1902.088674266
+-----------------------------
+Stdev window: 15
+Mean window: 5
+Number of testing days: 485
+Avg error/day: 0.0750532234
+-----------------------------
+Stdev window: 20
+Mean window: 5
+Number of testing days: 475
+Avg error/day: 1336.3926079512
+-----------------------------
+Stdev window: 25
+Mean window: 5
+Number of testing days: 465
+Avg error/day: 0.1221684389
+-----------------------------
+Stdev window: 30
+Mean window: 5
+Number of testing days: 455
+Avg error/day: 0.0627385408
+-----------------------------
+Stdev window: 35
+Mean window: 5
+Number of testing days: 445
+Avg error/day: 0.2583650361
+-----------------------------
+Stdev window: 40
+Mean window: 5
+Number of testing days: 435
+Avg error/day: 0.1386953027
+-----------------------------
+Stdev window: 45
+Mean window: 5
+Number of testing days: 425
+Avg error/day: 0.2317746655
+-----------------------------
+Stdev window: 50
+Mean window: 5
+Number of testing days: 415
+Avg error/day: 0.1171583436
+-----------------------------
+Stdev window: 55
+Mean window: 5
+Number of testing days: 405
+Avg error/day: 0.1297872265
+-----------------------------
+Stdev window: 60
+Mean window: 5
+Number of testing days: 395
+Avg error/day: 0.1028091322
+-----------------------------
+Stdev window: 5
+Mean window: 10
+Number of testing days: 495
+Avg error/day: 0.1095690226
+-----------------------------
+Stdev window: 10
+Mean window: 10
+Number of testing days: 485
+Avg error/day: 0.1098792668
+-----------------------------
+Stdev window: 15
+Mean window: 10
+Number of testing days: 475
+Avg error/day: 0.0952058231
+-----------------------------
+Stdev window: 20
+Mean window: 10
+Number of testing days: 465
+Avg error/day: 0.0872107813
+-----------------------------
+Stdev window: 25
+Mean window: 10
+Number of testing days: 455
+Avg error/day: 0.0763221723
+-----------------------------
+Stdev window: 30
+Mean window: 10
+Number of testing days: 445
+Avg error/day: 0.0563124243
+-----------------------------
+Stdev window: 35
+Mean window: 10
+Number of testing days: 435
+Avg error/day: 0.0556414386
+-----------------------------
+Stdev window: 40
+Mean window: 10
+Number of testing days: 425
+Avg error/day: 0.0656711377
+-----------------------------
+Stdev window: 45
+Mean window: 10
+Number of testing days: 415
+Avg error/day: 0.0647938645
+-----------------------------
+Stdev window: 50
+Mean window: 10
+Number of testing days: 405
+Avg error/day: 0.0769669253
+-----------------------------
+Stdev window: 55
+Mean window: 10
+Number of testing days: 395
+Avg error/day: 0.1223298883
+-----------------------------
+Stdev window: 60
+Mean window: 10
+Number of testing days: 385
+Avg error/day: 0.1102490471
+-----------------------------
+Stdev window: 5
+Mean window: 15
+Number of testing days: 485
+Avg error/day: 0.1251540497
+-----------------------------
+Stdev window: 10
+Mean window: 15
+Number of testing days: 475
+Avg error/day: 0.1043271031
+-----------------------------
+Stdev window: 15
+Mean window: 15
+Number of testing days: 465
+Avg error/day: 0.0989526766
+-----------------------------
+Stdev window: 20
+Mean window: 15
+Number of testing days: 455
+Avg error/day: 0.1301360789
+-----------------------------
+Stdev window: 25
+Mean window: 15
+Number of testing days: 445
+Avg error/day: 0.1020123551
+-----------------------------
+Stdev window: 30
+Mean window: 15
+Number of testing days: 435
+*****ERROR*****
+-----------------------------
+Mean window: 15
+Stdev window: 35
+Number of testing days: 425
+Avg error/day: 0.054478661
+-----------------------------
+Mean window: 15
+Stdev window: 40
+Number of testing days: 415
+Avg error/day: 0.065108289
+-----------------------------
+Mean window: 15
+Stdev window: 45
+Number of testing days: 405
+Avg error/day: 0.0799606197
+-----------------------------
+Mean window: 15
+Stdev window: 50
+Number of testing days: 395
+Avg error/day: 0.0962049088
+-----------------------------
+Mean window: 15
+Stdev window: 55
+Number of testing days: 385
+Avg error/day: 0.1017530746
+-----------------------------

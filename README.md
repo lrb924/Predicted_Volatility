@@ -30,7 +30,7 @@ Our team decided to investigate the effect of volatility of the S&P 500 Index on
 
 The business question we hope to answer is: *is trading defensive or cyclical ETFs based on future volatility profitable? If so, which set of ETFs is more profitable?*
 
-Our motivation for taking on this challenge is to find out if, based on historical volatility data, we could predict future volatility. And using the predicted future volatility we then wanted to find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
+Our motivation for taking on this challenge is to find out if, based on historic price data, we could predict future volatility. And using the predicted future volatility, we then wanted to find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
 
 For reference, a **cyclical stock** is "a stock that's price is affected by macroeconomic or systematic changes in the overall economy. Cyclical stocks are known for following the cycles of an economy through expansion, peak, recession, and recovery. Most cyclical stocks involve companies that sell consumer discretionary items that consumers buy more during a booming economy but spend less on during a recession." [1]
 
@@ -38,7 +38,7 @@ A **defensive stock** is "a stock that provides consistent dividends and stable 
 
 And one important thing to note is that "[c]yclical stocks are generally the opposite of defensive stocks. Cyclical stocks include discretionary companies, such as Starbucks or Nike, while defensive stocks are staples, such as Campbell Soup." [1]
 
-We hope to answer our business question by using historic closing data for the S&P 500, and the historic closing data for five cyclical ETFs, and five defensive ETFs. All of this data can be accessed through the Google Finance API.
+We hope to answer our business question by using historic candlestick, volume, and volatility data for the S&P 500, and closing price data for five cyclical ETFs, and five defensive ETFs. All of this data can be accessed through the Google Finance - Google Sheets API.
 
 The specific ETFs analyzed:
 * Cyclical:

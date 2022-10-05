@@ -7,8 +7,6 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-
-
 # import warnings
 # warnings.filterwarnings('ignore')
 
@@ -21,8 +19,7 @@ def get_signals(df):
     # print(df_trading['signal'].value_counts())
     
     return df
-    
-# get_signals(df_trading)
+
 
 # %%
 def load_etfs(directory):
@@ -41,33 +38,26 @@ def load_etfs(directory):
             
     return df
 
-# df_cyc = load_etfs('./DATA/ETF_CYC')
-# df_def = load_etfs('./DATA/ETF_DEF')
-
-# display(df_cyc.head())
-# display(df_def.head())
 
 # %%
-def compute_return(df_etfs, df_signals):
+def compute_return(df, df_signals):
     
     final_returns = {}
     
     # df_etfs = df_etfs.copy().iloc[-len(df_signals):]
     
-    df_etfs['return'] = df_etfs.sum(axis=1)
-    df_etfs['strategy_return'] = df_etfs['return'] * df_signals['signal']
-    df_etfs.dropna(inplace=True)
+    df['return'] = df.sum(axis=1)
+    df['strategy_return'] = df['return'] * df_signals['signal']
+    df.dropna(inplace=True)
     
-    df_etfs['cumulative_return'] = (1 + df_etfs["return"]).cumprod()
-    df_etfs['cumulative_strategy_return'] = (1 + df_etfs["strategy_return"]).cumprod()
+    df['cumulative_return'] = (1 + df["return"]).cumprod()
+    df['cumulative_strategy_return'] = (1 + df["strategy_return"]).cumprod()
     
-    final_returns['final_cumulative_return'] = np.round(df_etfs['cumulative_return'].iloc[-1], 3)
-    final_returns['final_cumulative_strategy_return'] = np.round(df_etfs['cumulative_strategy_return'].iloc[-1], 3)
+    final_returns['final_return'] = np.round(df['cumulative_return'].iloc[-1], 3)
+    final_returns['final_strategy_return'] = np.round(df['cumulative_strategy_return'].iloc[-1], 3)
     
-    return df_etfs, final_returns
+    return df, final_returns
 
-# df_cyc, final_cyc_returns = compute_return(df_cyc, df_signals)
-# df_def, final_def_returns = compute_return(df_def, df_signals)
 
 # %%
 # df_pred = pd.read_csv('./predictions_test.csv', parse_dates=True, infer_datetime_format=True, index_col='Date')
@@ -75,25 +65,5 @@ def compute_return(df_etfs, df_signals):
 
 # df_cyc = load_etfs('./DATA/ETF_CYC')
 # df_def = load_etfs('./DATA/ETF_DEF')
-
-# %%
-
-    
-    # print(final_cyc_returns)
-    # print(final_def_returns)
-    
-    # defensive_plot = (1 + df_cyc[["cumulative_return", "cumulative_strategy_return"]]).plot.line()
-    # (1 + df_def[["cumulative_return", "cumulative_strategy_return"]]).plot.line()
-
-# %%
-# defensive_plot = (1 + df_cyc[["return", "strategy_return"]]).cumprod().plot.line()
-# cyclical_plot = (1 + df_def[["return", "strategy_return"]]).cumprod().plot.line()
-
-# %%
-# def_stratreturns = (1 + defensive_etfs[['return', 'strategy_return']]).cumprod().iloc[-1]
-# cyc_stratreturns = (1 + cyclical_etfs[['return', 'strategy_return']]).cumprod().iloc[-1]
-# # 
-# display(def_stratreturns)
-# display(cyc_stratreturns)
 
 
