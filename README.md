@@ -26,15 +26,15 @@
 
 ### *Purpose of Use*
 
-Our team decided to investigate the effect of volatility of the S&P 500 Index on the profitability of cyclical and and defensive exchange-traded funds (ETFs). 
+Our team decided to investigate the effectiveness of predicting index volatity as a trading strategy and its  profitability when trading cyclical & defensive securities (ETF's). 
 
 The business question we hope to answer is: *is trading defensive or cyclical ETFs based on future volatility profitable? If so, which set of ETFs is more profitable?*
 
-Our motivation for taking on this challenge is to find out if, based on historic price data, we could predict future volatility. And using the predicted future volatility, we then wanted to find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
+Our motivation for taking on this challenge is to find out if, based on historic price data, we could predict future volatility, use the predicted future volatility as reference for our trading strategy, and then find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
 
-For reference, a **cyclical stock** is "a stock that's price is affected by macroeconomic or systematic changes in the overall economy. Cyclical stocks are known for following the cycles of an economy through expansion, peak, recession, and recovery. Most cyclical stocks involve companies that sell consumer discretionary items that consumers buy more during a booming economy but spend less on during a recession." [1]
+For reference, a **cyclical stock** is "a stock whose price is affected by macroeconomic or systematic changes in the overall economy. Cyclical stocks are known for following the cycles of an economy through expansion, peak, recession, and recovery. Most cyclical stocks involve companies that sell consumer discretionary items that consumers buy more during a booming economy but spend less on during a recession." [1]
 
-A **defensive stock** is "a stock that provides consistent dividends and stable earnings regardless of the state of the overall stock market." [2]
+A **defensive stock** is "a stock that provides consistent dividends and stable earnings regardless of the state of the overall stock market." When referencing to ETF portfolio managers try to create uncorrelated returns with benchmark indices providing risk-adjusted returns for clients and investors.   [2]
 
 And one important thing to note is that "[c]yclical stocks are generally the opposite of defensive stocks. Cyclical stocks include discretionary companies, such as Starbucks or Nike, while defensive stocks are staples, such as Campbell Soup." [1]
 
@@ -103,11 +103,21 @@ After initially running both models, it was clear that there could have been add
 
 Some of these limitations are obvious indicators of future development/improvement. If we were able to fine tune or adjust the models' input parameters that resulted in the best outcome, or the smallest error number, it's possible the strategy returns would have been better.
 
+Our trading algorithm was based on a signal whereby we bought securities when the predicted volatility was higher than the observed volatility and sold when relationship was the inverse. We would have liked to create better signals using bucketed limits using statistical measures (i.e mean, 25th percentile, 75th percentile) to use in cohersion with predicted and observed volatility.
+
+Furthermore, we wanted to expand our VARMAX model to predict volatility for a given timeframe on a weekly basis, however we encountered confusing documentation regarding the VARMAX.GetResults and were unable to decipher how to use it, ultimately we abadoned such method and stuck with our timeseries dependendant model. 
+
+Additionally, in out AP.ipynb we tried other ways of forecasting future volatility by using the "Bootstrap forecasting" this method aims to use the data of a sample study at hand as "surrogate population" for the purpose of approximating the sampling distribution from the original data and create a larger number of "Phantom" samples. Unfortunately, we were unable to create phantom samples in a manner that coincided with the data.  
+
+
+
 ELABORATE HERE
 
 ## Conclusion
 
 In conclusion, our VARMAX model's predictions did not outperform the actual ETF returns. However, it was determined that defensive ETFs are more profitable than cyclical when the predicted volatility was applied.
+
+
 
 ELABORATE HERE
 
@@ -118,7 +128,10 @@ ELABORATE HERE
 3. How to Check if Time Series Data is Stationary with Python: https://machinelearningmastery.com/time-series-data-stationary-python/
 4. ARCH/GARCH Volatility Forecasting: https://goldinlocks.github.io/ARCH_GARCH-Volatility-Forecasting/
 5. Multivariate time series models: https://goldinlocks.github.io/Multivariate-time-series-models/
-6. 
+6. VARMAX Documentation
+https://www.statsmodels.org/dev/generated/statsmodels.tsa.statespace.varmax.VARMAX.html
+7. GARCH documentation
+https://arch.readthedocs.io/en/latest/univariate/univariate_volatility_modeling.html
 
 Google Finance Data API
 
