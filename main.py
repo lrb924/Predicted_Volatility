@@ -2,7 +2,8 @@
 
 import pandas as pd
 from varmax import run_varmax_predictions
-from trading import get_signals, load_etfs, compute_return
+from trading import get_signals, load_etfs, compute_return, plot_returns
+import matplotlib.pyplot as plt
 
 
 if __name__ == '__main__':
@@ -25,8 +26,14 @@ if __name__ == '__main__':
     print('Defensive ETFs Results:')
     print(final_def_returns)
     
-    defensive_plot = (1 + df_cyc[["cumulative_return", "cumulative_strategy_return"]])
-    defensive_plot.plot.line()
+    plot_returns(df_cyc, 'Cyclical ETFs Returns')
+    plt.show()
+    plot_returns(df_def, 'Defensive ETFs Returns')
+    plt.show()
     
-    cyclical_plot = (1 + df_def[["cumulative_return", "cumulative_strategy_return"]])
-    cyclical_plot.plot.line()
+    
+    # defensive_plot = (1 + df_cyc[["cumulative_return", "cumulative_strategy_return"]])
+    # defensive_plot.plot.line()
+    
+    # cyclical_plot = (1 + df_def[["cumulative_return", "cumulative_strategy_return"]])
+    # cyclical_plot.plot.line()
