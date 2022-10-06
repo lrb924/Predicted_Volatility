@@ -6,16 +6,17 @@
 `pip install x` ; where 'x' is the package listed below:
 * `python == 3.7.13+`
 * `arch == 5.3.1`
+* `cufflinks == 0.17.3`
 * `json == 2.0.9`
 * `matplotlib == 3.5.1`
 * `numpy == 1.21.5`
 * `pandas == 1.3.5+`
+* `plotly == 5.10.0`
 * `scikit-learn == 1.1.2`
 * `scipy == 1.9.1`
 * `seaborn == 0.12`
 * `statsmodels == 0.13.2`
 * `tensorflow == 2.10.0`
-* `watermark == 2.3.1`
 
 ### *Files Navigation*
 * `Data`: Directory containing all original CSV files
