@@ -16,7 +16,6 @@
 * `scipy == 1.9.1`
 * `seaborn == 0.12`
 * `statsmodels == 0.13.2`
-* `tensorflow == 2.10.0`
 
 ### *Files Navigation*
 * `DATA`: Directory containing all original CSV files
@@ -24,13 +23,15 @@
 * `garch.ipynb`: Notebook containing GARCH model
 * `varmax.ipynb`: Notebook containing VARMAX model
 * `trading_algo.ipynb`: Notebook containing trading algorithm
-* `main.py`: Script to run VARMAX model
+* `main.py`: Script to run full VARMAX model and trading algorithm
+* `varmax.py`: Script to run VARMAX model
+* `trading.py`: Script to run trading algorithm
 
 ### *Purpose of Use*
 
-Our team decided to investigate the effectiveness of predicting index volatity as a trading strategy and its profitability when trading cyclical & defensive securities (ETFs). 
+Our team decided to investigate the effectiveness of predicting index volatity as a trading strategy and its profitability when trading cyclical and defensive securities (ETFs). 
 
-The business question we hope to answer is: *is trading defensive or cyclical ETFs based on future volatility profitable? If so, which set of ETFs is more profitable?*
+The business question we hope to answer is: *is trading cyclical or defensive ETFs based on future volatility profitable? If so, which set of ETFs is more profitable?*
 
 Our motivation for taking on this challenge is to find out if, based on historical price data, we could predict future volatility, use the predicted future volatility as a reference for our trading strategy, and then find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
 
@@ -38,11 +39,11 @@ For reference, a **cyclical stock** is "a stock whose price is affected by macro
 
 A **defensive stock** is "a stock that provides consistent dividends and stable earnings regardless of the state of the overall stock market." [2] 
 
-When referring to ETFs, portfolio managers try to create uncorrelated returns with benchmark indices providing risk-adjusted returns for clients and investors.
-
 And one important thing to note is that "[c]yclical stocks are generally the opposite of defensive stocks. Cyclical stocks include discretionary companies, such as Starbucks or Nike, while defensive stocks are staples, such as Campbell Soup." [1]
 
-We hope to answer our business question by using historical candlestick, volume, and volatility data for the S&P 500, and closing price data for five cyclical ETFs, and five defensive ETFs. All of this data can be accessed through the Google Finance - Google Sheets API.
+When referring to ETFs, portfolio managers try to create uncorrelated returns with benchmark indices providing risk-adjusted returns for clients and investors.
+
+We hope to answer our business question by using historical candlestick, volume, and volatility data for the S&P 500, and closing price data for five cyclical ETFs and five defensive ETFs. All of this data can be accessed through the Google Finance - Google Sheets API.
 
 The specific ETFs analyzed:
 * Cyclical:
@@ -67,16 +68,16 @@ The time periods analyzed include:
 
 ## Data Pre-Processing/Gathering Steps (Cleaning and Manipulation)
 
-Our team decided to use the Google Finance API to get the historical closing data for the S&P 500 Index, and ten different ETFs. After connecting via API to Google Finance, we created files for the Index and each ETF by using Google Sheets and then exporting those as CSVs. The collection of CSVs can be found in the `DATA` directory. We exported as much historical data as was available, which ended up going back to late September 2010 through late September 2022. However, some of the data was eventually dropped in order to ensure all data sources lined up correctly. We used the tickers $ITB, $IYC, $PEJ, $VCR, $XLY, $IYK, $KXI, $PBJ, $VOC, and $XLP for the ETFs. All of these are on the NYSE Arca Exchange, except $ITB, which is on the Cboe BZX Exchange. This group of ten ETFs are a sample of five cyclical and five defensive ETFs that covers a range of both types.
+Our team decided to use the Google Finance API to get the historical closing, candlestick, volume, and volatility data for the S&P 500 Index, and the historical closing prices of ten different ETFs. After connecting via API to Google Finance, we created files for the Index and each ETF by using Google Sheets and then exporting those as CSVs. The collection of CSVs can be found in the `DATA` directory. We exported as much historical data as was available, which ended up going back to late September 2010 through late September 2022. However, some of the data was eventually dropped in order to ensure all data sources lined up correctly. We used the tickers $ITB, $IYC, $PEJ, $VCR, $XLY, $IYK, $KXI, $PBJ, $VOC, and $XLP for the ETFs. All of these are on the NYSE Arca Exchange, except $ITB, which is on the Cboe BZX Exchange. This group of ten ETFs are a sample of five cyclical and five defensive ETFs that covers a range of both types.
 
-In order to get the predicted volatility based on the S&P 500, we used both a GARCH model, a statistical model, and a VARMAX model, a machine learning model. 
+In order to get the predicted volatility based on the S&P 500, we used both GARCH, a statistical model, and VARMAX, a machine learning model. 
 
-First, we ran the GARCH model. [4] To run this model, we added the S&P 500 data to a dataframe, and in addition to the closing prices we added columns with the calculated daily returns and the standard deviation (based on a rolling window of 5). Next, we used the Augmented Dickey-Fuller test to see if the data gathered was stationary. [3] Once it was confirmed the data was stationary, we were able to run the statistical model.
+First, we ran the GARCH model. [4, 7] To run this model, we added the S&P 500 data to a dataframe, and in addition to the closing prices we added columns with the calculated daily returns and the standard deviation (based on a rolling window of 5). Next, we used the Augmented Dickey-Fuller test to see if the data gathered was stationary. [3] Once it was confirmed the data was stationary, we were able to apply the `ACF` and `PACF` plots to find the appropriate `p,q`. After figuring out the `p,q` to use, we were able to run the GARCH model and forecast.
 
 ![GARCH Summary](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/garch_summary.png)
 GARCH Summary Table
 
-Next, we ran the VARMAX model. [5] To run this model, we followed the same steps as above before we ran GARCH: added data to a dataframe, got the daily returns and the standard deviation with a rolling window of 5, checked the stationarity of the data, then scaled the data using MaxAbsScaler. Once the data was manipulated, we created the VARMAX model and ran it.
+Next, we ran the VARMAX model. [5, 6] To run this model, we followed the same steps as above before we ran the GARCH model: added data to a dataframe, got the daily returns and the standard deviation with a rolling window of 5, found the `p,q` using an `ACF` plot, checked the stationarity of the daa, scaled the data using `MaxAbsScaler`, and tested the `p,q`. Once the data was manipulated, we created the VARMAX model and ran it.
 
 ## Visuals and Explanations
 
@@ -118,11 +119,15 @@ Some of these limitations are obvious indicators of future development/improveme
 
 Our trading algorithm was based on a signal whereby we bought securities when the predicted volatility was higher than the observed volatility, and sold when the relationship was the inverse. We would have liked to create better signals using bucketed limits using statistical measures (for exmaple, mean, 25th percentile, 75th percentile) to use with predicted and observed volatility.
 
-Furthermore, we wanted to expand our VARMAX model to predict volatility for a given timeframe on a weekly basis, however we encountered confusing documentation regarding the `varmax.VARMAXResults` and were unable to decipher how to use it. Ultimately we abadoned such method and stuck with our timeseries dependant model. 
+Furthermore, we wanted to expand our VARMAX model to predict volatility for a given timeframe on a weekly basis, however we encountered confusing documentation regarding the `varmax.VARMAXResults` and were unable to decipher how to use it. Ultimately we abadoned such methods and stuck with our timeseries dependant model. 
 
 Additionally, we initially tried other ways of forecasting future volatility by bootstrapping. This method aims to use the data of a sample study at hand as "surrogate population" for the purpose of approximating the sampling distribution from the original data and create a larger number of "phantom" samples. Unfortunately, we were unable to create phantom samples in a manner that coincided with the data.  
 
 Finally, one major limitation was our inability to run another model. Our group ultimately focused on the GARCH and VAMRAX models and realized that we should have spent less time being concerned about the results that the GARCH model gave us, and more time on an additional model.
+
+We may have been able to predict volatility within the vacuum of the datasets, but real life instances do not occur in a vacuum and outside factors not taken into account can affect volatility. For example, a global pandemic, inflation, recession, or other unpredictable instances can affect volatility in a way that cannot be predicted based on historical data.
+
+Next steps for this project might include testing another model and also fine tuning the two existing models to get more efficient results. Overall, the predicted volatility was used to create the signals of "buy" or "sell", however we think more analysis could be done regarding "short" and "long" positions.
 
 ## Conclusion
 
@@ -135,16 +140,15 @@ In conclusion, our VARMAX model's predictions did not outperform the actual ETF 
 3. How to Check if Time Series Data is Stationary with Python: https://machinelearningmastery.com/time-series-data-stationary-python/
 4. ARCH/GARCH Volatility Forecasting: https://goldinlocks.github.io/ARCH_GARCH-Volatility-Forecasting/
 5. Multivariate time series models: https://goldinlocks.github.io/Multivariate-time-series-models/
-6. VARMAX Documentation
+6. VARMAX Documentation:
 https://www.statsmodels.org/dev/generated/statsmodels.tsa.statespace.varmax.VARMAX.html
-7. GARCH documentation
+7. GARCH Documentation:
 https://arch.readthedocs.io/en/latest/univariate/univariate_volatility_modeling.html
 
-Google Finance Data API
+Google Finance - Google Sheets API
 
 ## Team Members
 1. Lara Barger
 2. Alec Gladkowski
 3. Billel Loubari
 4. Alejandro Palacios
-
