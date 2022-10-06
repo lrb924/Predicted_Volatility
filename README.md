@@ -74,7 +74,7 @@ In order to get the predicted volatility based on the S&P 500, we used both GARC
 
 First, we ran the GARCH model. [4, 7] To run this model, we added the S&P 500 data to a dataframe, and in addition to the closing prices we added columns with the calculated daily returns and the standard deviation (based on a rolling window of 5). Next, we used the Augmented Dickey-Fuller test to see if the data gathered was stationary. [3] Once it was confirmed the data was stationary, we were able to apply the `ACF` and `PACF` plots to find the appropriate `p,q`. After figuring out the `p,q` to use, we were able to run the GARCH model and forecast.
 
-![GARCH Summary](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/garch_summary.png)
+![GARCH Summary](./PLOTS/garch_summary.png)
 GARCH Summary Table
 
 Next, we ran the VARMAX model. [5, 6] To run this model, we followed the same steps as above before we ran the GARCH model: added data to a dataframe, got the daily returns and the standard deviation with a rolling window of 5, found the `p,q` using an `ACF` plot, checked the stationarity of the daa, scaled the data using `MaxAbsScaler`, and tested the `p,q`. Once the data was manipulated, we created the VARMAX model and ran it.
@@ -83,16 +83,16 @@ Next, we ran the VARMAX model. [5, 6] To run this model, we followed the same st
 
 Below is a sample of plots that were created during the data cleanup, after running both models, and after running the trading algorithm. All plots can be found in the `PLOTS` directory.
 
-![GARCH Predicted Volatility](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/garch_predicted_volatility.png)
+![GARCH Predicted Volatility](./PLOTS/garch_predicted_volatility.png)
 GARCH Predicted Volatility
 
-![VARMAX Predictions](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/varmax.png)
+![VARMAX Predictions](./PLOTS/varmax.png)
 VARMAX Results
 
-![Cyclical ETFs Results](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/cyclical_etfs_results.png)
+![Cyclical ETFs Results](./PLOTS/cyclical_etfs_results.png)
 Cyclical ETFs Actual Returns vs. Strategy Returns
 
-![Defensive ETFs Results](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/defensive_etfs_results.png)
+![Defensive ETFs Results](./PLOTS/defensive_etfs_results.png)
 Defensive ETFs Actual Returns vs. Strategy Return
 
 All plots not included here can be found in the `PLOTS` directory.
