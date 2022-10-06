@@ -19,27 +19,30 @@
 * `tensorflow == 2.10.0`
 
 ### *Files Navigation*
-* `Data`: Directory containing all original CSV files
-* `Plots`: Directory containing all images of plots created in Jupyter Notebook
-* `GARCH`: Notebook containing GARCH model
-* `VARMAX`: Notebook containing VARMAX model
-* `trading_algo`: Notebook containing trading algorithm
+* `DATA`: Directory containing all original CSV files
+* `PLOTS`: Directory containing all images of plots created in Jupyter Notebook
+* `garch.ipynb`: Notebook containing GARCH model
+* `varmax.ipynb`: Notebook containing VARMAX model
+* `trading_algo.ipynb`: Notebook containing trading algorithm
+* `main.py`: Script to run VARMAX model
 
 ### *Purpose of Use*
 
-Our team decided to investigate the effectiveness of predicting index volatity as a trading strategy and its  profitability when trading cyclical & defensive securities (ETF's). 
+Our team decided to investigate the effectiveness of predicting index volatity as a trading strategy and its profitability when trading cyclical & defensive securities (ETFs). 
 
 The business question we hope to answer is: *is trading defensive or cyclical ETFs based on future volatility profitable? If so, which set of ETFs is more profitable?*
 
-Our motivation for taking on this challenge is to find out if, based on historic price data, we could predict future volatility, use the predicted future volatility as reference for our trading strategy, and then find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
+Our motivation for taking on this challenge is to find out if, based on historical price data, we could predict future volatility, use the predicted future volatility as a reference for our trading strategy, and then find out if cyclical or defensive ETFs were more profitable during the period of predicted volatility.
 
 For reference, a **cyclical stock** is "a stock whose price is affected by macroeconomic or systematic changes in the overall economy. Cyclical stocks are known for following the cycles of an economy through expansion, peak, recession, and recovery. Most cyclical stocks involve companies that sell consumer discretionary items that consumers buy more during a booming economy but spend less on during a recession." [1]
 
-A **defensive stock** is "a stock that provides consistent dividends and stable earnings regardless of the state of the overall stock market." When referencing to ETF portfolio managers try to create uncorrelated returns with benchmark indices providing risk-adjusted returns for clients and investors.   [2]
+A **defensive stock** is "a stock that provides consistent dividends and stable earnings regardless of the state of the overall stock market." [2] 
+
+When referring to ETFs, portfolio managers try to create uncorrelated returns with benchmark indices providing risk-adjusted returns for clients and investors.
 
 And one important thing to note is that "[c]yclical stocks are generally the opposite of defensive stocks. Cyclical stocks include discretionary companies, such as Starbucks or Nike, while defensive stocks are staples, such as Campbell Soup." [1]
 
-We hope to answer our business question by using historic candlestick, volume, and volatility data for the S&P 500, and closing price data for five cyclical ETFs, and five defensive ETFs. All of this data can be accessed through the Google Finance - Google Sheets API.
+We hope to answer our business question by using historical candlestick, volume, and volatility data for the S&P 500, and closing price data for five cyclical ETFs, and five defensive ETFs. All of this data can be accessed through the Google Finance - Google Sheets API.
 
 The specific ETFs analyzed:
 * Cyclical:
@@ -64,7 +67,7 @@ The time periods analyzed include:
 
 ## Data Pre-Processing/Gathering Steps (Cleaning and Manipulation)
 
-Our team decided to use the Google Finance API to get the historical closing data for the S&P 500 Index, and ten different ETFs. After connecting via API to Google Finance, we created CSV files for the Index and each ETF by using Google Sheets and then exporting those as CSVs. The collection of CSVs can be found in the `Data` directory. We exported as much historical data as was available, which ended up going back to late September 2010 through late September 2022. However, some of the data was eventually dropped in order to ensure all data sources lined up correctly. We used the tickers $ITB, $IYC, $PEJ, $VCR, $XLY, $IYK, $KXI, $PBJ, $VOC, and $XLP for the ETFs. All of these are on the NYSE Arca Exchange, except $ITB, which is on the Cboe BZX Exchange. This group of ten ETFs are a sample of five cyclical and five defensive ETFs that covers a range of both types.
+Our team decided to use the Google Finance API to get the historical closing data for the S&P 500 Index, and ten different ETFs. After connecting via API to Google Finance, we created files for the Index and each ETF by using Google Sheets and then exporting those as CSVs. The collection of CSVs can be found in the `DATA` directory. We exported as much historical data as was available, which ended up going back to late September 2010 through late September 2022. However, some of the data was eventually dropped in order to ensure all data sources lined up correctly. We used the tickers $ITB, $IYC, $PEJ, $VCR, $XLY, $IYK, $KXI, $PBJ, $VOC, and $XLP for the ETFs. All of these are on the NYSE Arca Exchange, except $ITB, which is on the Cboe BZX Exchange. This group of ten ETFs are a sample of five cyclical and five defensive ETFs that covers a range of both types.
 
 In order to get the predicted volatility based on the S&P 500, we used both a GARCH model and a VARMAX model. 
 
@@ -78,11 +81,21 @@ GET CLARITY HERE
 
 ## Visuals and Explanations
 
-Below is a sample of plots that were created during the data cleanup, after running both models, and after running trading algorithm. All plots can be found in the `Plots` directory.
+Below is a sample of plots that were created during the data cleanup, after running both models, and after running trading algorithm. All plots can be found in the `PLOTS` directory.
 
-NEED SAMEPL OF ORGANIZED PLOTS
+![GARCH Predicted Volatility](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/garch_predicted_volatility.png)
+GARCH Predicted Volatility
 
-All plots not included here can be found in the `Plots` directory. 
+![VARMAX Predictions](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/varmax.png)
+VARMAX Results
+
+![Cyclical ETFs Results](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/cyclical_etfs_results.png)
+Cyclical ETFs Actual Returns vs. Strategy Returns
+
+![Defensive ETFs Results](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/defensive_etfs_results.png)
+Defensive ETFs Actual Returns vs. Strategy Returns
+
+All plots not included here can be found in the `PLOTS` directory. 
 
 ## Additional Explanations and Major Findings
 
