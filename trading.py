@@ -49,7 +49,14 @@ def compute_return(df, df_signal):
     
     return df, final_returns
 
+def plot_predictions(df):
+    fig = plt.figure()
+    df.plot(figsize=(20,5),title='volatility forecast error',color=['blue','purple','green'],style=['-','-',':'])
+    plt.legend(loc=('upper left'));
+    return fig
+
 def plot_returns(df, title):
     fig = plt.figure()
     plt.plot(df[["cumulative_return", "cumulative_strategy_return"]])
+    plt.title(title)
     return fig
