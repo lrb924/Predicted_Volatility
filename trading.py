@@ -57,6 +57,7 @@ def plot_predictions(df):
 
 def plot_returns(df, title):
     fig = plt.figure()
-    plt.plot(df[["cumulative_return", "cumulative_strategy_return"]])
+    df[["cumulative_return", "cumulative_strategy_return"]].plot()
     plt.title(title)
+    plt.legend(loc=('upper left'));
     return fig

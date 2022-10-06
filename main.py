@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     
-    # Uncomment to run VARMAX    
+    # # Uncomment to run VARMAX    
     df_pred = run_varmax_predictions()
     
     # For testing purposes using results
