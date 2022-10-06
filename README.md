@@ -69,19 +69,18 @@ The time periods analyzed include:
 
 Our team decided to use the Google Finance API to get the historical closing data for the S&P 500 Index, and ten different ETFs. After connecting via API to Google Finance, we created files for the Index and each ETF by using Google Sheets and then exporting those as CSVs. The collection of CSVs can be found in the `DATA` directory. We exported as much historical data as was available, which ended up going back to late September 2010 through late September 2022. However, some of the data was eventually dropped in order to ensure all data sources lined up correctly. We used the tickers $ITB, $IYC, $PEJ, $VCR, $XLY, $IYK, $KXI, $PBJ, $VOC, and $XLP for the ETFs. All of these are on the NYSE Arca Exchange, except $ITB, which is on the Cboe BZX Exchange. This group of ten ETFs are a sample of five cyclical and five defensive ETFs that covers a range of both types.
 
-In order to get the predicted volatility based on the S&P 500, we used both a GARCH model and a VARMAX model. 
+In order to get the predicted volatility based on the S&P 500, we used both a GARCH model, a statistical model, and a VARMAX model, a machine learning model. 
 
-First, we ran the GARCH model. [4] To run this model, we added the S&P 500 data to a dataframe, and in addition to the closing prices we added columns with the calculated daily returns and the standard deviation (based on a rolling window of 5). Next, we used the Augmented Dickey-Fuller test to see if the data gathered was stationary. [3]
+First, we ran the GARCH model. [4] To run this model, we added the S&P 500 data to a dataframe, and in addition to the closing prices we added columns with the calculated daily returns and the standard deviation (based on a rolling window of 5). Next, we used the Augmented Dickey-Fuller test to see if the data gathered was stationary. [3] Once it was confirmed the data was stationary, we were able to run the statistical model.
 
-GET CLARITY HERE
+![GARCH Summary](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/garch_summary.png)
+GARCH Summary Table
 
 Next, we ran the VARMAX model. [5] To run this model, we followed the same steps as above before we ran GARCH: added data to a dataframe, got the daily returns and the standard deviation with a rolling window of 5, checked the stationarity of the data, then scaled the data using MaxAbsScaler. Once the data was manipulated, we created the VARMAX model and ran it.
 
-GET CLARITY HERE
-
 ## Visuals and Explanations
 
-Below is a sample of plots that were created during the data cleanup, after running both models, and after running trading algorithm. All plots can be found in the `PLOTS` directory.
+Below is a sample of plots that were created during the data cleanup, after running both models, and after running the trading algorithm. All plots can be found in the `PLOTS` directory.
 
 ![GARCH Predicted Volatility](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/garch_predicted_volatility.png)
 GARCH Predicted Volatility
@@ -93,47 +92,41 @@ VARMAX Results
 Cyclical ETFs Actual Returns vs. Strategy Returns
 
 ![Defensive ETFs Results](https://github.com/lrb924/Predicted_Volatility/blob/development/PLOTS/defensive_etfs_results.png)
-Defensive ETFs Actual Returns vs. Strategy Returns
+Defensive ETFs Actual Returns vs. Strategy Return
 
-All plots not included here can be found in the `PLOTS` directory. 
+All plots not included here can be found in the `PLOTS` directory.
 
 ## Additional Explanations and Major Findings
 
-Once both models ran, we continued the process of getting the predicted volatility with the VARMAX model since there was a lower error with that model compared to the GARCH model. 
+Once both models ran, we continued the process of getting the predicted volatility with the VARMAX model. 
 
-After the VARMAX model was created, we were able to create a new trading algorithm to determine whether or not cyclical or defensive ETFs should be bought or sold based on the VARMAX model calculated. 
+After the VARMAX model was created, we were able to create a new trading algorithm to determine whether or not cyclical or defensive ETFs should be bought or sold based on the VARMAX model's predicted volatility. This algorithm was also put into a function and is able to run via the script `main.py`.
 
-First, we calculated the daily returns for each of the ETFs and concated the cyclical ETFs into one dataframe, and the defensive ETFs into another dataframe. Next, we calculated the sum of each day's returns and added a new column with the sums to each dataframe. Using the predicted volatility signals, we added a new column to each ETF dataframe
+First, we calculated the daily returns for each of the ETFs and concated the cyclical ETFs into one dataframe, and the defensive ETFs into another dataframe. Next, we calculated the sum of each day's returns and added a new column with the sums to each dataframe.
 
 By calculating the predicted volatility and comparing it to the observed volatility, we added a signal column to the dataframe that indicated whether or not the ETFs on that day should be classified as "buy" or "sell."
 
-Our primary finding after running the trading algorithm is that our model did not work as well as we hoped. Overall, the signal predictions of "buy" and "sell" resulted in strategy returns of 1.56% compared toactual returns of 2.08% for defensive ETFs. Additionally, it resulted in strategy returns of 0.16% compared to actual returns of 0.65% for cyclical ETFs. Both sets of strategy returns garnered less than the actual returns. 
+Our primary finding after running the trading algorithm is that our model did not work as well as we hoped. Overall, the signal predictions of "buy" and "sell" resulted in strategy returns of 1.28% compared to actual returns of 0.49% for cyclical ETFs. Additionally, it resulted in strategy returns of 1.58% compared to actual returns of 1.67% for defensive ETFs.
 
 ## Challenges, Limitations, and Future Developments
 
 The initial challenge was deciding which data to use for the analysis. We originally wanted to include more than one index to calculate the predicted volatility, but our time constraints limited that. It would have taken too long to run the models with more than one Index, therefore we decided to move forward with only one: the S&P 500. 
 
-After initially running both models, it was clear that there could have been additional testing done in order to get a more satisfactory error number. In the tests that were performed, there were also conflicting findings when running tests for the best <code>p,q</code> values for our VARMAX model. For example, this testing was based on minimizing <code>BIC</code> for the set of <code>p,q</code> combinations we chose to examine. However, the <code>p,q</code> combination that resulted in the smallest <code>BIC</code> would not necessarily result in the lowest <code>Average Error per Day</code> when the VARMAX predictions were compared with the true values.
+After initially running both models, it was clear that there could have been additional testing done in order to get a more satisfactory error number. In the tests that were performed, there were also conflicting findings when running tests for the best `p,q` values for our VARMAX model. For example, this testing was based on minimizing `BIC` for the set of `p,q` combinations we chose to examine. However, the `p,q` combination that resulted in the smallest `BIC` would not necessarily result in the lowest `Average Error per Day` when the VARMAX predictions were compared with the true values.
 
 Some of these limitations are obvious indicators of future development/improvement. If we were able to fine tune or adjust the models' input parameters that resulted in the best outcome, or the smallest error number, it's possible the strategy returns would have been better.
 
-Our trading algorithm was based on a signal whereby we bought securities when the predicted volatility was higher than the observed volatility and sold when relationship was the inverse. We would have liked to create better signals using bucketed limits using statistical measures (i.e mean, 25th percentile, 75th percentile) to use in cohersion with predicted and observed volatility.
+Our trading algorithm was based on a signal whereby we bought securities when the predicted volatility was higher than the observed volatility, and sold when the relationship was the inverse. We would have liked to create better signals using bucketed limits using statistical measures (for exmaple, mean, 25th percentile, 75th percentile) to use with predicted and observed volatility.
 
-Furthermore, we wanted to expand our VARMAX model to predict volatility for a given timeframe on a weekly basis, however we encountered confusing documentation regarding the VARMAX.GetResults and were unable to decipher how to use it, ultimately we abadoned such method and stuck with our timeseries dependendant model. 
+Furthermore, we wanted to expand our VARMAX model to predict volatility for a given timeframe on a weekly basis, however we encountered confusing documentation regarding the `varmax.VARMAXResults` and were unable to decipher how to use it. Ultimately we abadoned such method and stuck with our timeseries dependant model. 
 
-Additionally, in out AP.ipynb we tried other ways of forecasting future volatility by using the "Bootstrap forecasting" this method aims to use the data of a sample study at hand as "surrogate population" for the purpose of approximating the sampling distribution from the original data and create a larger number of "Phantom" samples. Unfortunately, we were unable to create phantom samples in a manner that coincided with the data.  
+Additionally, we initially tried other ways of forecasting future volatility by bootstrapping. This method aims to use the data of a sample study at hand as "surrogate population" for the purpose of approximating the sampling distribution from the original data and create a larger number of "phantom" samples. Unfortunately, we were unable to create phantom samples in a manner that coincided with the data.  
 
-
-
-ELABORATE HERE
+Finally, one major limitation was our inability to run another model. Our group ultimately focused on the GARCH and VAMRAX models and realized that we should have spent less time being concerned about the results that the GARCH model gave us, and more time on an additional model.
 
 ## Conclusion
 
-In conclusion, our VARMAX model's predictions did not outperform the actual ETF returns. However, it was determined that defensive ETFs are more profitable than cyclical when the predicted volatility was applied.
-
-
-
-ELABORATE HERE
+In conclusion, our VARMAX model's predictions did not outperform the actual ETF returns overall. However, it was determined that defensive ETFs are more profitable than cyclical when the predicted volatility was applied. Unfortunately GARCH and VARMAX cannot be directly compared, and we ultimately should have focused more on fine tuning the GARCH model and testing another model in addition to VARMAX.
 
 ## References
 
